@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane fx:controller="controllers.FXMLExampleController"
+          xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10" >
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" halignment="RIGHT">
+
+        </ColumnConstraints>
+        <ColumnConstraints hgrow="NEVER" />
+
+    </columnConstraints>
+
+    <Text text="Welcome"
+          GridPane.columnIndex="1" GridPane.rowIndex="0"
+          GridPane.columnSpan="3"/>
+
+    <Text text="Data"
+          GridPane.columnIndex="1" GridPane.rowIndex="2"
+          GridPane.columnSpan="1"/>
+
+    <TextField fx:id="trainingDataName"
+            GridPane.columnIndex="2" GridPane.rowIndex="2"
+            GridPane.columnSpan="3"/>
+    <HBox spacing="10"
+          GridPane.columnIndex="5" GridPane.rowIndex="2">
+        <Button text="Browse" />
+                <!--onAction="#handleSubmitButtonAction"/>-->
+    </HBox>
+
+
+
+    <Text text="Test Set"
+          GridPane.columnIndex="1" GridPane.rowIndex="3"
+          GridPane.columnSpan="3"/>
+
+    <TextField fx:id="testDataName"
+            GridPane.columnIndex="1" GridPane.rowIndex="4"
+            GridPane.columnSpan="3"/>
+    <HBox spacing="10"
+          GridPane.columnIndex="4" GridPane.rowIndex="4">
+        <Button text="Browse" />
+        <!--onAction="#handleSubmitButtonAction"/>-->
+    </HBox>
+
+    <Text text="Algorithm"
+          GridPane.columnIndex="1" GridPane.rowIndex="5"
+          GridPane.columnSpan="3"/>
+
+    <ComboBox
+            GridPane.columnIndex="1" GridPane.rowIndex="6"
+            GridPane.columnSpan="3"/>
+
+
+</GridPane>
