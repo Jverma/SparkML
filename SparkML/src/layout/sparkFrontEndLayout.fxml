@@ -6,6 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import java.lang.String?>
+<?import javafx.collections.*?>
 <GridPane fx:controller="controllers.FXMLExampleController"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10" >
     <columnConstraints>
@@ -54,7 +56,18 @@
 
     <ComboBox
             GridPane.columnIndex="1" GridPane.rowIndex="6"
-            GridPane.columnSpan="3"/>
+            GridPane.columnSpan="3">
+    <items>
+        <FXCollections fx:factory="observableArrayList">
+            <String fx:value="Random Forest for Classification" />
+            <String fx:value="Naive Bayes for Classification" />
+            <String fx:value="Random Forest for Regression" />
+        </FXCollections>
+    </items>
+        <value>
+            <String fx:value="Random Forest for Classification" />
+        </value>
+    </ComboBox>
 
 
 </GridPane>
