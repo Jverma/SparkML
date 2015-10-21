@@ -24,7 +24,7 @@ public class SparkFrontEndFX extends Application {
             primaryStage.show();
         }
         catch(Exception e) {
-            System.out.print("ERROR");
+            System.out.print("ERROR" + e);
         }
     }
 

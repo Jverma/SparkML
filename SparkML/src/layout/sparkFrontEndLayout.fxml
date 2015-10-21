@@ -26,7 +26,7 @@
           GridPane.columnIndex="1" GridPane.rowIndex="3"
           GridPane.columnSpan="2"/>
 
-    <TextField fx:id="trainingDataName"
+    <TextField fx:id="trainingDataField"
             GridPane.columnIndex="3" GridPane.rowIndex="3"
             GridPane.columnSpan="3"/>
     <HBox spacing="10"
@@ -68,6 +68,12 @@
             <String fx:value="Random Forest for Classification" />
         </value>
     </ComboBox>
+
+    <HBox spacing="10"
+          GridPane.columnIndex="6" GridPane.rowIndex="8">
+        <Button text="Run Algorithm"
+                onAction="#handleRunAlgorithm"/>
+    </HBox>
 
     <stylesheets>
         <URL value="@../Styles/style.css" />
