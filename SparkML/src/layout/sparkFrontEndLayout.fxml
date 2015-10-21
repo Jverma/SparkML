@@ -18,44 +18,44 @@
 
     </columnConstraints>
 
-    <Text text="Welcome"
+    <Text id="header-text" text="Machine Learning using Spark"
           GridPane.columnIndex="1" GridPane.rowIndex="0"
           GridPane.columnSpan="3"/>
 
-    <Text text="Data"
-          GridPane.columnIndex="1" GridPane.rowIndex="2"
-          GridPane.columnSpan="1"/>
+    <Text id="data-text" text="Training Data"
+          GridPane.columnIndex="1" GridPane.rowIndex="3"
+          GridPane.columnSpan="2"/>
 
     <TextField fx:id="trainingDataName"
-            GridPane.columnIndex="2" GridPane.rowIndex="2"
+            GridPane.columnIndex="3" GridPane.rowIndex="3"
             GridPane.columnSpan="3"/>
     <HBox spacing="10"
-          GridPane.columnIndex="5" GridPane.rowIndex="2">
+          GridPane.columnIndex="6" GridPane.rowIndex="3">
         <Button text="Browse" />
                 <!--onAction="#handleSubmitButtonAction"/>-->
     </HBox>
 
 
 
-    <Text text="Test Set"
-          GridPane.columnIndex="1" GridPane.rowIndex="3"
-          GridPane.columnSpan="3"/>
+    <Text id="test-text" text="Testing Data"
+          GridPane.columnIndex="1" GridPane.rowIndex="5"
+          GridPane.columnSpan="2"/>
 
     <TextField fx:id="testDataName"
-            GridPane.columnIndex="1" GridPane.rowIndex="4"
+            GridPane.columnIndex="3" GridPane.rowIndex="5"
             GridPane.columnSpan="3"/>
     <HBox spacing="10"
-          GridPane.columnIndex="4" GridPane.rowIndex="4">
+          GridPane.columnIndex="6" GridPane.rowIndex="5">
         <Button text="Browse" />
         <!--onAction="#handleSubmitButtonAction"/>-->
     </HBox>
 
-    <Text text="Algorithm"
-          GridPane.columnIndex="1" GridPane.rowIndex="5"
-          GridPane.columnSpan="3"/>
+    <Text id="algo-text" text="Algorithm"
+          GridPane.columnIndex="1" GridPane.rowIndex="7"
+          GridPane.columnSpan="2"/>
 
     <ComboBox
-            GridPane.columnIndex="1" GridPane.rowIndex="6"
+            GridPane.columnIndex="3" GridPane.rowIndex="7"
             GridPane.columnSpan="3">
     <items>
         <FXCollections fx:factory="observableArrayList">
@@ -69,5 +69,8 @@
         </value>
     </ComboBox>
 
+    <stylesheets>
+        <URL value="@../Styles/style.css" />
+    </stylesheets>
 
 </GridPane>
