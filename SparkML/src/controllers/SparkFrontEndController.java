@@ -34,8 +34,6 @@ public class SparkFrontEndController {
     @FXML
     protected void handleRunAlgorithm(ActionEvent event) {
         System.out.println("Running Random Forest");
-        System.out.println(com.sun.javafx.runtime.VersionInfo.getRuntimeVersion());
-
         RandomForestClass app = new RandomForestClass(trainingFile);
         System.out.println("Begin train");
         final RandomForestModel model = app.trainModel();
