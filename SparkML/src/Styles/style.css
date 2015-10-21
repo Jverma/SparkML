@@ -1,0 +1,29 @@
+#header-text {
+    -fx-font-size: 50px;
+    -fx-font-family: sans-serif;
+    -fx-fill: steelblue;
+}
+
+#data-text{
+    -fx-font-size: 15px;
+    -fx-font-family: sans-serif;
+    -fx-fill: brown;
+}
+#test-text {
+    -fx-font-size: 15px;
+    -fx-font-family: sans-serif;
+    -fx-fill: brown;
+}
+
+#algo-text {
+    -fx-font-size: 15px;
+    -fx-font-family: sans-serif;
+    -fx-fill: brown;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+}
