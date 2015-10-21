@@ -8,7 +8,7 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.*?>
-<GridPane fx:controller="controllers.FXMLExampleController"
+<GridPane fx:controller="controllers.SparkFrontEndController"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10" >
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" halignment="RIGHT">
@@ -31,8 +31,8 @@
             GridPane.columnSpan="3"/>
     <HBox spacing="10"
           GridPane.columnIndex="6" GridPane.rowIndex="3">
-        <Button text="Browse" />
-                <!--onAction="#handleSubmitButtonAction"/>-->
+        <Button text="Browse"
+                onAction="#handleTrainingBrowserButtonAction"/>
     </HBox>
 
 
