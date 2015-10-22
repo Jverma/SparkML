@@ -1,23 +1,27 @@
 package controllers;
 
 import DataUtils.TSVReaderUtils;
+import javafx.application.Platform;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableListBase;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import mlAlgorithms.RandomForestClass;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +49,7 @@ public class SparkFrontEndController {
     @FXML private Text param2;
     @FXML private TextField param2_value;
 
+    @FXML private TextArea actiontarget;
 
 
 
@@ -90,11 +95,79 @@ public class SparkFrontEndController {
     }
 
     @FXML
-    protected void handleRunAlgorithm(ActionEvent event) {
+    protected void handleRunAlgorithm(ActionEvent event) throws IOException{
+
+//        Stage stage1 = new Stage();
+//        Parent root = FXMLLoader.load(getClass().getResource("../layout/fxml_example.fxml"));
+//
+//        stage1.setScene(new Scene(root));
+//        stage1.setTitle("Test");
+//        stage1.initModality(Modality.APPLICATION_MODAL);
+//        stage1.initOwner(run.getScene().getWindow());
+//        stage1.show();
+//
+        final Thread runRFThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                actiontarget.setVisible(true);
+                updateUI("Starting Random Forest for Classification",actiontarget);
+               // actiontarget.setText("Starting Random Forest for Classification");
+
+                System.out.println("Running Random Forest");
+                RandomForestClass app = null;
+                int labelIndex = headerMap.get((String)labelSelector.getValue());
+                System.out.println("LabelINDEX "+labelIndex);
+                //appendText("\nUsing " + labelSelector.getValue() + " as the class label.");
+                updateUI("Using " + labelSelector.getValue() + " as the class label.",actiontarget);
+
+
+                //appendText("\nLoading Files");
+                updateUI("Loading Files",actiontarget);
+
+                //addTextToActionField("Using " + labelSelector.getValue() + " as the class label.");
+                //addTextToActionField("Loading Files");
+
+                if(testingDataField.getText().equals("")) {
+                    app = new RandomForestClass(labelIndex,trainingFile);
+                }
+                else {
+                    app = new RandomForestClass(labelIndex,trainingFile,testingFile);
+                }
+                System.out.println("Begin train");
+                //addTextToActionField("Beginning Training");
+                updateUI("Beginning Training",actiontarget);
+
+                //appendText("\nBeginning Training");
+                final RandomForestModel model = app.trainModel();
+                System.out.println("Finished Training");
+                //addTextToActionField("Finished Training");
+//                appendText("\nFinishedTraining");
+                updateUI("FinishedTraining",actiontarget);
+
+                app.getClassificationError(model);
+                System.out.print("Finish run");
+                app.closeContext();
+            }
+        });
+
+
+        runRFThread.setDaemon(true);
+        runRFThread.start();
+
+        /*
+        actiontarget.setVisible(true);
+        actiontarget.setText("Starting Random Forest for Classification");
+
         System.out.println("Running Random Forest");
         RandomForestClass app = null;
         int labelIndex = headerMap.get((String)labelSelector.getValue());
         System.out.println("LabelINDEX "+labelIndex);
+        appendText("\nUsing " + labelSelector.getValue() + " as the class label.");
+
+        appendText("\nLoading Files");
+        //addTextToActionField("Using " + labelSelector.getValue() + " as the class label.");
+        //addTextToActionField("Loading Files");
+
         if(testingDataField.getText().equals("")) {
             app = new RandomForestClass(labelIndex,trainingFile);
         }
@@ -102,11 +175,16 @@ public class SparkFrontEndController {
             app = new RandomForestClass(labelIndex,trainingFile,testingFile);
         }
         System.out.println("Begin train");
+        //addTextToActionField("Beginning Training");
+        appendText("\nBeginning Training");
         final RandomForestModel model = app.trainModel();
-        System.out.println("Finish train");
+        System.out.println("Finished Training");
+        //addTextToActionField("Finished Training");
+        appendText("\nFinishedTraining");
         app.getClassificationError(model);
         System.out.print("Finish run");
         app.closeContext();
+        */
     }
 
     @FXML
@@ -142,4 +220,20 @@ public class SparkFrontEndController {
         }
     }
 
+    public void addTextToActionField(String text) {
+        actiontarget.setText(actiontarget.getText()+"\n"+text);
+
+    }
+    public void appendText(String str) {
+        //runSafe(() -> actiontarget.appendText(str));
+    }
+
+    private void updateUI(final String message, final TextArea textArea) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                textArea.appendText(message+"\n");
+            }
+        });
+    }
 }

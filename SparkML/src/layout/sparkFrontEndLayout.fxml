@@ -117,8 +117,8 @@
                 disable="true"/>
     </HBox>
 
-    <Text fx:id="actiontarget"
-          GridPane.columnIndex="1" GridPane.rowIndex="6"
+    <TextArea fx:id="actiontarget"
+          GridPane.columnIndex="1" GridPane.rowIndex="11"
             GridPane.columnSpan="20"/>
     <stylesheets>
         <URL value="@../Styles/style.css" />
