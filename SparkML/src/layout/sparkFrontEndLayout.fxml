@@ -10,13 +10,6 @@
 <?import javafx.collections.*?>
 <GridPane fx:controller="controllers.SparkFrontEndController"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10" >
-    <!--<columnConstraints>-->
-        <!--<ColumnConstraints hgrow="NEVER" halignment="RIGHT">-->
-
-        <!--</ColumnConstraints>-->
-        <!--<ColumnConstraints hgrow="NEVER" />-->
-
-    <!--</columnConstraints>-->
 
     <Text id="header-text" text="Machine Learning using Spark"
           GridPane.columnIndex="1" GridPane.rowIndex="0"
@@ -35,13 +28,11 @@
                 onAction="#handleTrainingBrowserButtonAction"/>
     </HBox>
 
-    <Text id="label-text" text="Choose Label"
-          visible="false"
+    <Text fx:id="label_text" text="Choose Label"
           GridPane.columnIndex="7" GridPane.rowIndex="3"
           GridPane.columnSpan="2"/>
 
     <ComboBox fx:id="labelSelector"
-              visible="false"
             GridPane.columnIndex="9" GridPane.rowIndex="3"
             GridPane.columnSpan="2">
         <items>
@@ -73,16 +64,17 @@
 
 
     <CheckBox fx:id="checkBox1" text="Train/Test Split"
-            GridPane.columnIndex="7" GridPane.rowIndex="5"
+            GridPane.columnIndex="11" GridPane.rowIndex="3"
             GridPane.columnSpan="2"/>
 
-    <Text id="algo-text" text="Algorithm"
+    <Text id="algo_text" text="Algorithm"
           GridPane.columnIndex="1" GridPane.rowIndex="7"
           GridPane.columnSpan="2"/>
 
     <ComboBox fx:id="algoSelector"
             GridPane.columnIndex="3" GridPane.rowIndex="7"
             GridPane.columnSpan="3">
+        <!--onAction="#algorithmChoiceHandle"-->
     <items>
         <FXCollections fx:factory="observableArrayList">
             <String fx:value="Random Forest for Classification" />
@@ -95,13 +87,36 @@
         </value>
     </ComboBox>
 
+    <Text fx:id="param1" text="Param 1"
+          GridPane.columnIndex="6" GridPane.rowIndex="7"
+          GridPane.columnSpan="2"
+          />
+
+    <TextField fx:id="param1_value"
+               GridPane.columnIndex="8" GridPane.rowIndex="7"
+               GridPane.columnSpan="2"
+               />
+
+    <Text fx:id="param2" text="nClasses"
+          GridPane.columnIndex="10" GridPane.rowIndex="7"
+          GridPane.columnSpan="2"
+            />
+
+    <TextField fx:id="param2_value"
+               GridPane.columnIndex="12" GridPane.rowIndex="7"
+               GridPane.columnSpan="2"
+            />
+
     <HBox fx:id="runButton" spacing="10"
           GridPane.columnIndex="1" GridPane.rowIndex="9"
             GridPane.columnSpan="3">
-        <Button text="Run Algorithm"
+        <Button fx:id="run" text="Run Algorithm"
                 onAction="#handleRunAlgorithm"/>
     </HBox>
 
+    <Text fx:id="actiontarget"
+          GridPane.columnIndex="1" GridPane.rowIndex="6"
+            GridPane.columnSpan="20"/>
     <stylesheets>
         <URL value="@../Styles/style.css" />
     </stylesheets>

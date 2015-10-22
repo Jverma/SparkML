@@ -15,7 +15,7 @@
     -fx-fill: brown;
 }
 
-#algo-text {
+#algo_text {
     -fx-font-size: 15px;
     -fx-font-family: sans-serif;
     -fx-fill: brown;
@@ -28,6 +28,8 @@
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);
 }
 
-#runButton {
-    -fx-font-size: 20px;
+#run {
+    -fx-font-size: 25px;
+    -fx-pref-height: 60;
+    -fx-pref-width: 200.0;
 }
