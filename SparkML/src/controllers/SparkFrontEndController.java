@@ -8,7 +8,9 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -27,11 +29,24 @@ import java.util.Set;
 public class SparkFrontEndController {
     @FXML private TextField trainingDataField;
     @FXML private TextField testingDataField;
+    @FXML private Button run;
 
     @FXML private ComboBox labelSelector;
+    @FXML private Text label_text;
+
+    @FXML private ComboBox algoSelector;
     File trainingFile;
     File testingFile;
     HashMap<String, Integer> headerMap;
+
+
+    @FXML private Text param1;
+    @FXML private TextField param1_value;
+    @FXML private Text param2;
+    @FXML private TextField param2_value;
+
+
+
 
     @FXML
     protected void handleTrainingBrowserButtonAction(ActionEvent event) {
@@ -39,20 +54,25 @@ public class SparkFrontEndController {
         fileChooser.setTitle("Open Train File");
         Node currentNode = (Node)event.getSource();
         File selectedTrainingFile =  fileChooser.showOpenDialog(currentNode.getScene().getWindow());
-        trainingFile = selectedTrainingFile;
-        trainingDataField.setText(selectedTrainingFile.getName());
 
+        if(selectedTrainingFile!=null) {
+            trainingFile = selectedTrainingFile;
+            trainingDataField.setText(selectedTrainingFile.getName());
 
-        //Get Headers
-        headerMap = TSVReaderUtils.getHeadersFromFile(trainingFile);
-        Set<String> headersSort = headerMap.keySet();
+            //Get Headers
+            headerMap = TSVReaderUtils.getHeadersFromFile(trainingFile);
+            Set<String> headersSort = headerMap.keySet();
+            labelSelector.setVisible(true);
+            label_text.setVisible(true);
+            ObservableList<String> items = labelSelector.getItems();
+            items.remove(0, items.size());
+            items.addAll(headersSort);
+            labelSelector.setItems(items);
+            labelSelector.setValue((items.get(0)));
 
-        ObservableList<String> items =  labelSelector.getItems();
-        items.remove(0,items.size());
-        items.addAll(headersSort);
-        labelSelector.setItems(items);
-        labelSelector.setValue((items.get(0)));
-        System.out.println(selectedTrainingFile.getName());
+            run.setDisable(false);
+            System.out.println(selectedTrainingFile.getName());
+        }
        //System.out.println(fileName);
     }
     @FXML
@@ -61,9 +81,11 @@ public class SparkFrontEndController {
         fileChooser.setTitle("Open Test File");
         Node currentNode = (Node)event.getSource();
         File selectedTestingFile =  fileChooser.showOpenDialog(currentNode.getScene().getWindow());
-        testingFile = selectedTestingFile;
-        testingDataField.setText(selectedTestingFile.getName());
-        System.out.println(selectedTestingFile.getName());
+        if(selectedTestingFile!=null) {
+            testingFile = selectedTestingFile;
+            testingDataField.setText(selectedTestingFile.getName());
+            System.out.println(selectedTestingFile.getName());
+        }
         //System.out.println(fileName);
     }
 
@@ -87,5 +109,37 @@ public class SparkFrontEndController {
         app.closeContext();
     }
 
+    @FXML
+    protected void algorithmChoiceHandle(ActionEvent event) {
+        System.out.println("Choice:"+algoSelector.getValue());
+        param2.setDisable(false);
+        param2_value.setDisable(false);
+
+        switch((String)algoSelector.getValue()) {
+            case "Random Forest for Classification":
+                System.out.println(1);
+                param1.setText("nTrees");
+                param1_value.setText("10");
+                param2.setText("nClasses");
+                param2_value.setText("2");
+                break;
+            case "Naive Bayes for Classification":
+                param1.setText("ABC");
+                param1_value.setText("");
+                param2.setText("nClasses");
+                param2_value.setText("2");
+                System.out.println(2);
+                break;
+            case "Random Forest for Regression":
+                System.out.println(3);
+                param1.setText("nTrees");
+                param1_value.setText("10");
+                param2.setDisable(true);
+                param2_value.setDisable(true);
+                param2.setText("nClasses");
+                param2_value.setText("0");
+                break;
+        }
+    }
 
 }

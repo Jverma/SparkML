@@ -73,8 +73,8 @@
 
     <ComboBox fx:id="algoSelector"
             GridPane.columnIndex="3" GridPane.rowIndex="7"
-            GridPane.columnSpan="3">
-        <!--onAction="#algorithmChoiceHandle"-->
+            GridPane.columnSpan="3"
+            onAction="#algorithmChoiceHandle">
     <items>
         <FXCollections fx:factory="observableArrayList">
             <String fx:value="Random Forest for Classification" />
@@ -87,12 +87,13 @@
         </value>
     </ComboBox>
 
-    <Text fx:id="param1" text="Param 1"
+    <Text fx:id="param1" text="numTrees"
           GridPane.columnIndex="6" GridPane.rowIndex="7"
           GridPane.columnSpan="2"
           />
 
     <TextField fx:id="param1_value"
+               text="10"
                GridPane.columnIndex="8" GridPane.rowIndex="7"
                GridPane.columnSpan="2"
                />
@@ -103,6 +104,7 @@
             />
 
     <TextField fx:id="param2_value"
+               text="2"
                GridPane.columnIndex="12" GridPane.rowIndex="7"
                GridPane.columnSpan="2"
             />
@@ -111,7 +113,8 @@
           GridPane.columnIndex="1" GridPane.rowIndex="9"
             GridPane.columnSpan="3">
         <Button fx:id="run" text="Run Algorithm"
-                onAction="#handleRunAlgorithm"/>
+                onAction="#handleRunAlgorithm"
+                disable="true"/>
     </HBox>
 
     <Text fx:id="actiontarget"
