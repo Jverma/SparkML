@@ -41,13 +41,13 @@
           GridPane.columnIndex="1" GridPane.rowIndex="5"
           GridPane.columnSpan="2"/>
 
-    <TextField fx:id="testDataName"
+    <TextField fx:id="testingDataField"
             GridPane.columnIndex="3" GridPane.rowIndex="5"
             GridPane.columnSpan="3"/>
     <HBox spacing="10"
           GridPane.columnIndex="6" GridPane.rowIndex="5">
-        <Button text="Browse" />
-        <!--onAction="#handleSubmitButtonAction"/>-->
+        <Button text="Browse"
+            onAction="#handleTestingBrowserButtonAction"/>
     </HBox>
 
     <Text id="algo-text" text="Algorithm"

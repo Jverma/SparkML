@@ -16,13 +16,14 @@ import java.io.File;
  */
 public class SparkFrontEndController {
     @FXML private TextField trainingDataField;
-
+    @FXML private TextField testingDataField;
     File trainingFile;
+    File testingFile;
 
     @FXML
     protected void handleTrainingBrowserButtonAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Open Train File");
         Node currentNode = (Node)event.getSource();
         File selectedTrainingFile =  fileChooser.showOpenDialog(currentNode.getScene().getWindow());
         trainingFile = selectedTrainingFile;
@@ -30,11 +31,28 @@ public class SparkFrontEndController {
         System.out.println(selectedTrainingFile.getName());
        //System.out.println(fileName);
     }
+    @FXML
+    protected void handleTestingBrowserButtonAction(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Test File");
+        Node currentNode = (Node)event.getSource();
+        File selectedTestingFile =  fileChooser.showOpenDialog(currentNode.getScene().getWindow());
+        testingFile = selectedTestingFile;
+        testingDataField.setText(selectedTestingFile.getName());
+        System.out.println(selectedTestingFile.getName());
+        //System.out.println(fileName);
+    }
 
     @FXML
     protected void handleRunAlgorithm(ActionEvent event) {
         System.out.println("Running Random Forest");
-        RandomForestClass app = new RandomForestClass(trainingFile);
+        RandomForestClass app = null;
+        if(testingDataField.getText().equals("")) {
+            app = new RandomForestClass(trainingFile);
+        }
+        else {
+            app = new RandomForestClass(trainingFile,testingFile);
+        }
         System.out.println("Begin train");
         final RandomForestModel model = app.trainModel();
         System.out.println("Finish train");
