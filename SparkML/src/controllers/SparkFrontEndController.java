@@ -1,8 +1,14 @@
 package controllers;
 
+import DataUtils.TSVReaderUtils;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableListBase;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -10,6 +16,10 @@ import mlAlgorithms.RandomForestClass;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by zrm22 on 10/21/15.
@@ -17,6 +27,8 @@ import java.io.File;
 public class SparkFrontEndController {
     @FXML private TextField trainingDataField;
     @FXML private TextField testingDataField;
+
+    @FXML private ComboBox labelSelector;
     File trainingFile;
     File testingFile;
 
@@ -28,6 +40,20 @@ public class SparkFrontEndController {
         File selectedTrainingFile =  fileChooser.showOpenDialog(currentNode.getScene().getWindow());
         trainingFile = selectedTrainingFile;
         trainingDataField.setText(selectedTrainingFile.getName());
+
+
+        //Get Headers
+        HashMap<String, Integer> headerMap = TSVReaderUtils.getHeadersFromFile(trainingFile);
+        Set<String> headersSort = headerMap.keySet();
+
+        for(Object header:headersSort) {
+            System.out.println("Header: "+(String)header);
+        }
+        ObservableList<String> items =  labelSelector.getItems();
+        items.remove(0,items.size());
+        items.addAll(headersSort);
+        labelSelector.setItems(items);
+        labelSelector.setValue((items.get(0)));
         System.out.println(selectedTrainingFile.getName());
        //System.out.println(fileName);
     }

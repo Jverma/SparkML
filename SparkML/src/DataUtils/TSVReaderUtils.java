@@ -17,6 +17,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Created by zrm22 on 10/21/15.
@@ -75,6 +76,26 @@ public class TSVReaderUtils {
         );
 
        return parsedData;
+    }
+
+    //ZRM Oct22
+    public static HashMap<String,Integer> getHeadersFromFile(File inputFile) {
+        HashMap<String,Integer> headerMap = new HashMap<>();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            String headerLine = reader.readLine();
+            String[] headerLineSplit = headerLine.split("\t");
+            for(int i = 0; i<headerLineSplit.length; i++) {
+                headerMap.put(headerLineSplit[i],i);
+            }
+
+            reader.close();
+        }
+        catch(IOException e) {
+            System.out.println(e);
+        }
+        return headerMap;
     }
 
 }
