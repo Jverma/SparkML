@@ -26,19 +26,22 @@ public class RandomForestClass implements java.io.Serializable{
     JavaRDD<LabeledPoint> trainData, testData;
     HashMap<String,String> params;
    // RandomForestModel model;
-    JavaSparkContext sc;
+     JavaSparkContext sc;
 
     public RandomForestClass() {
-
+        SparkConf sparkConf = new SparkConf().setAppName("JavaRandomForestHackTest").setMaster("local[*]");
+        final JavaSparkContext sc2 = new JavaSparkContext(sparkConf);
+        //sc = sc2;
+        //sc2.close();
     }
 
-    public RandomForestClass(File trainingFile) {
+    public RandomForestClass(int labelIndex, File trainingFile) {
         this.trainFile = trainingFile;
         this.testFile = trainingFile;
         SparkConf sparkConf = new SparkConf().setAppName("JavaRandomForestHackTest").setMaster("local[*]");
         final JavaSparkContext sc2 = new JavaSparkContext(sparkConf);
-
-        trainData = TSVReaderUtils.createRDD(sc2, trainFile,0);
+        //sc = sc2;
+        trainData = TSVReaderUtils.createRDD(sc2, trainFile,labelIndex);
         JavaRDD<LabeledPoint>[] splits = trainData.randomSplit(new double[]{0.70, 0.30});
         trainData = splits[0];
         testData = splits[1];
@@ -51,17 +54,17 @@ public class RandomForestClass implements java.io.Serializable{
         params.put("maxDepth", "5");
         params.put("maxBins" , "32");
         params.put("seed" , "12345");
-
+        //sc2.close();
     }
 
-    public RandomForestClass(File trainingFile, File testingFile) {
+    public RandomForestClass(int labelIndex, File trainingFile, File testingFile) {
         this.trainFile = trainingFile;
         this.testFile = testingFile;
         SparkConf sparkConf = new SparkConf().setAppName("JavaRandomForestHackTest").setMaster("local[*]");
         final JavaSparkContext sc2 = new JavaSparkContext(sparkConf);
-
-        trainData = TSVReaderUtils.createRDD(sc2, trainFile,0);
-        testData = TSVReaderUtils.createRDD(sc2, testFile,0);
+        //sc = sc2;
+        trainData = TSVReaderUtils.createRDD(sc2, trainFile,labelIndex);
+        testData = TSVReaderUtils.createRDD(sc2, testFile,labelIndex);
 
 
         params = new HashMap<>();
@@ -73,16 +76,16 @@ public class RandomForestClass implements java.io.Serializable{
         params.put("maxBins" , "32");
         params.put("seed" , "12345");
 
-
+        //sc2.close();
     }
-    public RandomForestClass(File trainingFile, File testingFile, HashMap<String,String> params) {
+    public RandomForestClass(int labelIndex, File trainingFile, File testingFile, HashMap<String,String> params) {
         this.trainFile = trainingFile;
         this.testFile = testingFile;
         SparkConf sparkConf = new SparkConf().setAppName("JavaRandomForestHackTest").setMaster("local[*]");
         final JavaSparkContext sc2 = new JavaSparkContext(sparkConf);
-
-        trainData = TSVReaderUtils.createRDD(sc2, trainFile,0);
-        testData = TSVReaderUtils.createRDD(sc2, testFile,0);
+        sc = sc2;
+        trainData = TSVReaderUtils.createRDD(sc2, trainFile,labelIndex);
+        testData = TSVReaderUtils.createRDD(sc2, testFile,labelIndex);
 
         this.params = params;
     }
@@ -135,6 +138,11 @@ public class RandomForestClass implements java.io.Serializable{
         System.out.println("Test Error: " + testErr);
         getConfusionMatrix(computePredictionPairs(model));
         return testErr;
+    }
+
+    public void closeContext() {
+        testData.context().stop();
+        //sc.close();
     }
 
 }

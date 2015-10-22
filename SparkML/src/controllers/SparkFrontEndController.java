@@ -31,6 +31,7 @@ public class SparkFrontEndController {
     @FXML private ComboBox labelSelector;
     File trainingFile;
     File testingFile;
+    HashMap<String, Integer> headerMap;
 
     @FXML
     protected void handleTrainingBrowserButtonAction(ActionEvent event) {
@@ -43,12 +44,9 @@ public class SparkFrontEndController {
 
 
         //Get Headers
-        HashMap<String, Integer> headerMap = TSVReaderUtils.getHeadersFromFile(trainingFile);
+        headerMap = TSVReaderUtils.getHeadersFromFile(trainingFile);
         Set<String> headersSort = headerMap.keySet();
 
-        for(Object header:headersSort) {
-            System.out.println("Header: "+(String)header);
-        }
         ObservableList<String> items =  labelSelector.getItems();
         items.remove(0,items.size());
         items.addAll(headersSort);
@@ -73,17 +71,20 @@ public class SparkFrontEndController {
     protected void handleRunAlgorithm(ActionEvent event) {
         System.out.println("Running Random Forest");
         RandomForestClass app = null;
+        int labelIndex = headerMap.get((String)labelSelector.getValue());
+        System.out.println("LabelINDEX "+labelIndex);
         if(testingDataField.getText().equals("")) {
-            app = new RandomForestClass(trainingFile);
+            app = new RandomForestClass(labelIndex,trainingFile);
         }
         else {
-            app = new RandomForestClass(trainingFile,testingFile);
+            app = new RandomForestClass(labelIndex,trainingFile,testingFile);
         }
         System.out.println("Begin train");
         final RandomForestModel model = app.trainModel();
         System.out.println("Finish train");
         app.getClassificationError(model);
         System.out.print("Finish run");
+        app.closeContext();
     }
 
 
