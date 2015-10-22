@@ -69,9 +69,6 @@
             onAction="#handleTestingBrowserButtonAction"/>
     </HBox>
 
-    <!--<Text id="split-text" text="Train/Test Split"-->
-          <!--GridPane.columnIndex="7" GridPane.rowIndex="5"-->
-          <!--GridPane.columnSpan="2"/>-->
 
     <CheckBox fx:id="checkBox1" text="Train/Test Split"
             GridPane.columnIndex="7" GridPane.rowIndex="5"
@@ -96,9 +93,9 @@
         </value>
     </ComboBox>
 
-    <HBox spacing="10"
+    <HBox fx:id="runButton" spacing="10"
           GridPane.columnIndex="1" GridPane.rowIndex="9"
-            GridPane.columnSpan="2">
+            GridPane.columnSpan="3">
         <Button text="Run Algorithm"
                 onAction="#handleRunAlgorithm"/>
     </HBox>
