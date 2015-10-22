@@ -10,13 +10,13 @@
 <?import javafx.collections.*?>
 <GridPane fx:controller="controllers.SparkFrontEndController"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10" >
-    <columnConstraints>
-        <ColumnConstraints hgrow="NEVER" halignment="RIGHT">
+    <!--<columnConstraints>-->
+        <!--<ColumnConstraints hgrow="NEVER" halignment="RIGHT">-->
 
-        </ColumnConstraints>
-        <ColumnConstraints hgrow="NEVER" />
+        <!--</ColumnConstraints>-->
+        <!--<ColumnConstraints hgrow="NEVER" />-->
 
-    </columnConstraints>
+    <!--</columnConstraints>-->
 
     <Text id="header-text" text="Machine Learning using Spark"
           GridPane.columnIndex="1" GridPane.rowIndex="0"
@@ -28,12 +28,31 @@
 
     <TextField fx:id="trainingDataField"
             GridPane.columnIndex="3" GridPane.rowIndex="3"
-            GridPane.columnSpan="3"/>
+            GridPane.columnSpan="2"/>
     <HBox spacing="10"
-          GridPane.columnIndex="6" GridPane.rowIndex="3">
+          GridPane.columnIndex="5" GridPane.rowIndex="3">
         <Button text="Browse"
                 onAction="#handleTrainingBrowserButtonAction"/>
     </HBox>
+
+    <Text id="label-text" text="Label"
+          GridPane.columnIndex="7" GridPane.rowIndex="3"
+          GridPane.columnSpan="2"/>
+
+    <ComboBox id="labelSelector"
+            GridPane.columnIndex="9" GridPane.rowIndex="3"
+            GridPane.columnSpan="3">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Random Forest for Classification" />
+                <String fx:value="Naive Bayes for Classification" />
+                <String fx:value="Random Forest for Regression" />
+            </FXCollections>
+        </items>
+        <value>
+            <String fx:value="Random Forest for Classification" />
+        </value>
+    </ComboBox>
 
 
 
@@ -43,18 +62,22 @@
 
     <TextField fx:id="testingDataField"
             GridPane.columnIndex="3" GridPane.rowIndex="5"
-            GridPane.columnSpan="3"/>
+            GridPane.columnSpan="2"/>
     <HBox spacing="10"
-          GridPane.columnIndex="6" GridPane.rowIndex="5">
+          GridPane.columnIndex="5" GridPane.rowIndex="5">
         <Button text="Browse"
             onAction="#handleTestingBrowserButtonAction"/>
     </HBox>
+
+    <Text id="split-text" text="Split"
+          GridPane.columnIndex="7" GridPane.rowIndex="5"
+          GridPane.columnSpan="2"/>
 
     <Text id="algo-text" text="Algorithm"
           GridPane.columnIndex="1" GridPane.rowIndex="7"
           GridPane.columnSpan="2"/>
 
-    <ComboBox
+    <ComboBox id="algoSelector"
             GridPane.columnIndex="3" GridPane.rowIndex="7"
             GridPane.columnSpan="3">
     <items>
@@ -70,7 +93,8 @@
     </ComboBox>
 
     <HBox spacing="10"
-          GridPane.columnIndex="6" GridPane.rowIndex="8">
+          GridPane.columnIndex="6" GridPane.rowIndex="8"
+            GridPane.columnSpan="4">
         <Button text="Run Algorithm"
                 onAction="#handleRunAlgorithm"/>
     </HBox>
