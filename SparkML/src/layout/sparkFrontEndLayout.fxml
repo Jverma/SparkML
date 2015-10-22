@@ -36,21 +36,23 @@
     </HBox>
 
     <Text id="label-text" text="Choose Label"
+          visible="false"
           GridPane.columnIndex="7" GridPane.rowIndex="3"
           GridPane.columnSpan="2"/>
 
     <ComboBox fx:id="labelSelector"
+              visible="false"
             GridPane.columnIndex="9" GridPane.rowIndex="3"
             GridPane.columnSpan="2">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Random" />
-                <String fx:value="Naive" />
-                <String fx:value="Random Forest" />
+                <!--<String fx:value="Random" />-->
+                <!--<String fx:value="Naive" />-->
+                <!--<String fx:value="Random Forest" />-->
             </FXCollections>
         </items>
         <value>
-            <String fx:value="Classification" />
+            <String fx:value="" />
         </value>
     </ComboBox>
 
