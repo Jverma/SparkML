@@ -18,6 +18,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mlAlgorithms.RandomForestClass;
+import org.apache.spark.mllib.linalg.Matrix;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
 
 import java.io.File;
@@ -111,21 +112,14 @@ public class SparkFrontEndController {
             public void run() {
                 actiontarget.setVisible(true);
                 updateUI("Starting Random Forest for Classification",actiontarget);
-               // actiontarget.setText("Starting Random Forest for Classification");
 
                 System.out.println("Running Random Forest");
                 RandomForestClass app = null;
                 int labelIndex = headerMap.get((String)labelSelector.getValue());
                 System.out.println("LabelINDEX "+labelIndex);
-                //appendText("\nUsing " + labelSelector.getValue() + " as the class label.");
+
                 updateUI("Using " + labelSelector.getValue() + " as the class label.",actiontarget);
-
-
-                //appendText("\nLoading Files");
                 updateUI("Loading Files",actiontarget);
-
-                //addTextToActionField("Using " + labelSelector.getValue() + " as the class label.");
-                //addTextToActionField("Loading Files");
 
                 if(testingDataField.getText().equals("")) {
                     app = new RandomForestClass(labelIndex,trainingFile);
@@ -134,17 +128,28 @@ public class SparkFrontEndController {
                     app = new RandomForestClass(labelIndex,trainingFile,testingFile);
                 }
                 System.out.println("Begin train");
-                //addTextToActionField("Beginning Training");
                 updateUI("Beginning Training",actiontarget);
 
-                //appendText("\nBeginning Training");
                 final RandomForestModel model = app.trainModel();
                 System.out.println("Finished Training");
-                //addTextToActionField("Finished Training");
-//                appendText("\nFinishedTraining");
+
                 updateUI("FinishedTraining",actiontarget);
 
-                app.getClassificationError(model);
+                updateUI("Test Error: "+app.getClassificationError(model),actiontarget);
+
+                Matrix matrix =  app.getConfusionMatrix(model);
+                System.out.println("\ta\t\tb\t\t<-classified as");
+                for(int i = 0; i<matrix.numCols(); i++) {
+                    System.out.print(""+i+"\t");
+                    for(int j = 0; j<matrix.numRows(); j++) {
+                        //System.out.print(matrix.apply(i,j)+"\t\t\t");
+                        System.out.printf("%5d",(int)matrix.apply(i,j));
+                    }
+                    System.out.println();
+                }
+                //System.out.println(matrix.toString());
+
+
                 System.out.print("Finish run");
                 app.closeContext();
             }

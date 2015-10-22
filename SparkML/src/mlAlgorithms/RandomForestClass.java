@@ -8,6 +8,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.mllib.evaluation.MulticlassMetrics;
+import org.apache.spark.mllib.linalg.Matrix;
 import org.apache.spark.mllib.regression.LabeledPoint;
 import org.apache.spark.mllib.tree.RandomForest;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
@@ -115,6 +116,19 @@ public class RandomForestClass implements java.io.Serializable{
     public void getConfusionMatrix(JavaRDD<Tuple2<Object,Object>> predictionPairs) {
         MulticlassMetrics metrics = new MulticlassMetrics(JavaRDD.toRDD(predictionPairs));
         System.out.println(metrics.confusionMatrix().toString());
+    }
+    public Matrix getConfusionMatrix(RandomForestModel model) {
+        JavaRDD<Tuple2<Object, Object>> scoreAndLabels = testData.map(
+                new Function<LabeledPoint, Tuple2<Object, Object>>() {
+                    public Tuple2<Object, Object> call(LabeledPoint p) {
+                        Double score = model.predict(p.features());
+                        return new Tuple2<Object, Object>(score, p.label());
+                    }
+                }
+        );
+        MulticlassMetrics metrics = new MulticlassMetrics(JavaRDD.toRDD(scoreAndLabels));
+        System.out.println(metrics.confusionMatrix().toString());
+        return metrics.confusionMatrix();
     }
 
     public double getClassificationError(RandomForestModel model) {
