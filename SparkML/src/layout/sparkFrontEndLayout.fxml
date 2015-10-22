@@ -35,22 +35,22 @@
                 onAction="#handleTrainingBrowserButtonAction"/>
     </HBox>
 
-    <Text id="label-text" text="Label"
+    <Text id="label-text" text="Choose Label"
           GridPane.columnIndex="7" GridPane.rowIndex="3"
           GridPane.columnSpan="2"/>
 
-    <ComboBox id="labelSelector"
+    <ComboBox fx:id="labelSelector"
             GridPane.columnIndex="9" GridPane.rowIndex="3"
-            GridPane.columnSpan="3">
+            GridPane.columnSpan="2">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Random Forest for Classification" />
-                <String fx:value="Naive Bayes for Classification" />
-                <String fx:value="Random Forest for Regression" />
+                <String fx:value="Random" />
+                <String fx:value="Naive" />
+                <String fx:value="Random Forest" />
             </FXCollections>
         </items>
         <value>
-            <String fx:value="Random Forest for Classification" />
+            <String fx:value="Classification" />
         </value>
     </ComboBox>
 
@@ -69,15 +69,19 @@
             onAction="#handleTestingBrowserButtonAction"/>
     </HBox>
 
-    <Text id="split-text" text="Split"
-          GridPane.columnIndex="7" GridPane.rowIndex="5"
-          GridPane.columnSpan="2"/>
+    <!--<Text id="split-text" text="Train/Test Split"-->
+          <!--GridPane.columnIndex="7" GridPane.rowIndex="5"-->
+          <!--GridPane.columnSpan="2"/>-->
+
+    <CheckBox fx:id="checkBox1" text="Train/Test Split"
+            GridPane.columnIndex="7" GridPane.rowIndex="5"
+            GridPane.columnSpan="2"/>
 
     <Text id="algo-text" text="Algorithm"
           GridPane.columnIndex="1" GridPane.rowIndex="7"
           GridPane.columnSpan="2"/>
 
-    <ComboBox id="algoSelector"
+    <ComboBox fx:id="algoSelector"
             GridPane.columnIndex="3" GridPane.rowIndex="7"
             GridPane.columnSpan="3">
     <items>
@@ -93,8 +97,8 @@
     </ComboBox>
 
     <HBox spacing="10"
-          GridPane.columnIndex="6" GridPane.rowIndex="8"
-            GridPane.columnSpan="4">
+          GridPane.columnIndex="1" GridPane.rowIndex="9"
+            GridPane.columnSpan="2">
         <Button text="Run Algorithm"
                 onAction="#handleRunAlgorithm"/>
     </HBox>
