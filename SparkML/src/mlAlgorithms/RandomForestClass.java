@@ -7,6 +7,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFunction;
+import org.apache.spark.mllib.evaluation.BinaryClassificationMetrics;
 import org.apache.spark.mllib.evaluation.MulticlassMetrics;
 import org.apache.spark.mllib.linalg.Matrix;
 import org.apache.spark.mllib.regression.LabeledPoint;
@@ -56,6 +57,20 @@ public class RandomForestClass implements java.io.Serializable{
         params.put("maxBins" , "32");
         params.put("seed" , "12345");
         //sc2.close();
+    }
+
+    public RandomForestClass(int labelIndex, File trainingFile, HashMap<String,String> params) {
+        this.trainFile = trainingFile;
+        this.testFile = trainingFile;
+        SparkConf sparkConf = new SparkConf().setAppName("JavaRandomForestHackTest").setMaster("local[*]");
+        final JavaSparkContext sc2 = new JavaSparkContext(sparkConf);
+        //sc = sc2;
+        trainData = TSVReaderUtils.createRDD(sc2, trainFile,labelIndex);
+        JavaRDD<LabeledPoint>[] splits = trainData.randomSplit(new double[]{0.70, 0.30});
+        trainData = splits[0];
+        testData = splits[1];
+
+        this.params = params;
     }
 
     public RandomForestClass(int labelIndex, File trainingFile, File testingFile) {
@@ -150,9 +165,17 @@ public class RandomForestClass implements java.io.Serializable{
                     }
                 }).count() / testData.count();
         System.out.println("Test Error: " + testErr);
-        getConfusionMatrix(computePredictionPairs(model));
         return testErr;
     }
+
+    public BinaryClassificationMetrics getBinClassMetrics(JavaRDD<Tuple2<Object,Object>> predictionPairs) {
+       return new BinaryClassificationMetrics(predictionPairs.rdd());
+    }
+
+    public MulticlassMetrics getMultClassMetrics(JavaRDD<Tuple2<Object, Object>> predictionPairs) {
+        return new MulticlassMetrics(predictionPairs.rdd());
+    }
+
 
     public void closeContext() {
         testData.context().stop();

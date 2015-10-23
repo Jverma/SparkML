@@ -125,42 +125,67 @@ public class SparkFrontEndController {
                 updateUI("Using " + labelSelector.getValue() + " as the class label.",actiontarget);
                 updateUI("Loading Files",actiontarget);
 
+                HashMap<String,String> params = new HashMap<String,String>();
+                params.put("numClasses",param2_value.getText());
+                params.put("numTrees",param1_value.getText()); // Use more in practice.
+                params.put("featureSubsetStrategy" , "auto"); // Let the algorithm choose.
+                params.put("impurity", "gini");
+                params.put("maxDepth", "5");
+                params.put("maxBins" , "32");
+                params.put("seed" , "12345");
+
                 if(testingDataField.getText().equals("")) {
-                    app = new RandomForestClass(labelIndex,trainingFile);
+                    app = new RandomForestClass(labelIndex,trainingFile,params);
                 }
                 else {
-                    app = new RandomForestClass(labelIndex,trainingFile,testingFile);
+                    app = new RandomForestClass(labelIndex,trainingFile,testingFile,params);
                 }
+                //TODO Format Params better
+                updateUI("Creating RandomForest with the following parameters:\n"+params.toString()+"\n\n",actiontarget);
+
                 System.out.println("Begin train");
-                updateUI("Beginning Training",actiontarget);
+                updateUI("Begin Training",actiontarget);
 
-                final RandomForestModel model = app.trainModel();
-                System.out.println("Finished Training");
+                try {
+                    final RandomForestModel model = app.trainModel();
+                    System.out.println("Finished Training");
 
-                updateUI("FinishedTraining",actiontarget);
+                    updateUI("FinishedTraining", actiontarget);
 
-                updateUI("Test Error: "+app.getClassificationError(model),actiontarget);
+                    updateUI("Test Error: " + app.getClassificationError(model), actiontarget);
 
-                Matrix matrix =  app.getConfusionMatrix(model);
-                double[][] matrixDoubleArray = new double[matrix.numRows()][matrix.numCols()];
-                System.out.println("\ta\t\tb\t\t<-classified as");
-                for(int i = 0; i<matrix.numCols(); i++) {
-                    System.out.print(""+i+"\t");
-                    for(int j = 0; j<matrix.numRows(); j++) {
-                        //System.out.print(matrix.apply(i,j)+"\t\t\t");
-                        System.out.printf("%5d",(int)matrix.apply(i,j));
-                        matrixDoubleArray[j][i] = matrix.apply(j,i);
+                    updateUI("Precision:"+app.getMultClassMetrics(app.computePredictionPairs(model)).precision(),actiontarget);
+                    updateUI("Recall:"+app.getMultClassMetrics(app.computePredictionPairs(model)).recall(),actiontarget);
+
+                    updateUI("AUC:"+app.getBinClassMetrics(app.computePredictionPairs(model)).areaUnderROC(),actiontarget);
+
+
+                    Matrix matrix = app.getConfusionMatrix(model);
+                    double[][] matrixDoubleArray = new double[matrix.numRows()][matrix.numCols()];
+                    System.out.println("\ta\t\tb\t\t<-classified as");
+                    for (int i = 0; i < matrix.numCols(); i++) {
+                        System.out.print("" + i + "\t");
+                        for (int j = 0; j < matrix.numRows(); j++) {
+                            //System.out.print(matrix.apply(i,j)+"\t\t\t");
+                            System.out.printf("%5d", (int) matrix.apply(i, j));
+                            matrixDoubleArray[j][i] = matrix.apply(j, i);
+                        }
+                        System.out.println();
                     }
-                    System.out.println();
+                    //System.out.println(matrix.toString());
+
+                    System.out.println("**********\n" + MatrixUtils.matrixToString(matrixDoubleArray));
+                    updateUI(MatrixUtils.matrixToString(matrixDoubleArray), actiontarget);
+
+                    System.out.print("Finish run");
+                    enableRunButton(run);
+                    app.closeContext();
                 }
-                //System.out.println(matrix.toString());
-
-                System.out.println("**********\n"+MatrixUtils.matrixToString(matrixDoubleArray));
-                updateUI(MatrixUtils.matrixToString(matrixDoubleArray),actiontarget);
-
-                System.out.print("Finish run");
-                enableRunButton(run);
-                app.closeContext();
+                catch(Exception e) {
+                    updateUI("\n\nERROR: Exception occurred:\n"+e, actiontarget);
+                    enableRunButton(run);
+                    app.closeContext();
+                }
             }
         });
 
