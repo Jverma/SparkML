@@ -71,11 +71,11 @@
     </HBox>
 
 
-    <CheckBox fx:id="checkBox1" text="Train/Test Split"
-            GridPane.columnIndex="11" GridPane.rowIndex="3"
+    <CheckBox fx:id="checkBox1" text="Labeled"
+            GridPane.columnIndex="7" GridPane.rowIndex="5"
             GridPane.columnSpan="2">
         <tooltip>
-            <Tooltip text="Split data into train and test sets" />
+            <Tooltip text="Check if the testing data is labeled ?" />
         </tooltip>
             </CheckBox>
 
