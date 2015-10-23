@@ -25,10 +25,14 @@
     <HBox spacing="10"
           GridPane.columnIndex="5" GridPane.rowIndex="3">
         <Button text="Browse"
-                onAction="#handleTrainingBrowserButtonAction"/>
+                onAction="#handleTrainingBrowserButtonAction">
+            <tooltip>
+                <Tooltip text="Upload training data" />
+            </tooltip>
+                </Button>
     </HBox>
 
-    <Text fx:id="label_text" text="Choose Label"
+    <Text fx:id="label_text" text="Target Variable"
           GridPane.columnIndex="7" GridPane.rowIndex="3"
           GridPane.columnSpan="2"/>
 
@@ -37,14 +41,14 @@
             GridPane.columnSpan="2">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <!--<String fx:value="Random" />-->
-                <!--<String fx:value="Naive" />-->
-                <!--<String fx:value="Random Forest" />-->
             </FXCollections>
         </items>
         <value>
             <String fx:value="" />
         </value>
+        <tooltip>
+            <Tooltip text="Choose the variable you want to predict" />
+        </tooltip>
     </ComboBox>
 
 
@@ -59,13 +63,21 @@
     <HBox spacing="10"
           GridPane.columnIndex="5" GridPane.rowIndex="5">
         <Button text="Browse"
-            onAction="#handleTestingBrowserButtonAction"/>
+            onAction="#handleTestingBrowserButtonAction">
+            <tooltip>
+                <Tooltip text="Upload testing data" />
+            </tooltip>
+                </Button>
     </HBox>
 
 
     <CheckBox fx:id="checkBox1" text="Train/Test Split"
             GridPane.columnIndex="11" GridPane.rowIndex="3"
-            GridPane.columnSpan="2"/>
+            GridPane.columnSpan="2">
+        <tooltip>
+            <Tooltip text="Split data into train and test sets" />
+        </tooltip>
+            </CheckBox>
 
     <Text id="algo_text" text="Algorithm"
           GridPane.columnIndex="1" GridPane.rowIndex="7"
@@ -75,11 +87,19 @@
             GridPane.columnIndex="3" GridPane.rowIndex="7"
             GridPane.columnSpan="3"
             onAction="#algorithmChoiceHandle">
+        <tooltip>
+            <Tooltip text="Choose the algorithm to build the model" />
+        </tooltip>
     <items>
         <FXCollections fx:factory="observableArrayList">
             <String fx:value="Random Forest for Classification" />
-            <String fx:value="Naive Bayes for Classification" />
             <String fx:value="Random Forest for Regression" />
+            <String fx:value="Gradient Boosted Trees for Regression" />
+            <String fx:value="Gradient Boosted Trees for Classification" />
+            <String fx:value="Linear model for Regression" />
+            <String fx:value="Linear model for Classification" />
+            <String fx:value="Naive Bayes for Classification" />
+
         </FXCollections>
     </items>
         <value>

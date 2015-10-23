@@ -9,6 +9,10 @@
     -fx-font-family: sans-serif;
     -fx-fill: brown;
 }
+
+/*#trainingDataField {*/
+   /*-fx-border-color: lightsteelblue;*/
+/*}*/
 #test-text {
     -fx-font-size: 15px;
     -fx-font-family: sans-serif;
@@ -32,4 +36,10 @@
     -fx-font-size: 25px;
     -fx-pref-height: 60;
     -fx-pref-width: 200.0;
+}
+
+.tooltip{
+    -fx-pref-width: 35;
+    -fx-pref-height: 25;
+    -fx-background-color: cornflowerblue;
 }
