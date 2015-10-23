@@ -2,6 +2,7 @@ package controllers;
 
 import DataUtils.MatrixUtils;
 import DataUtils.TSVReaderUtils;
+import DataUtils.TSVWriterUtils;
 import javafx.application.Platform;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -54,7 +55,7 @@ public class SparkFrontEndController {
 
     @FXML private TextArea actiontarget;
 
-
+    @FXML private CheckBox checkBox1;
 
     @FXML
     protected void handleTrainingBrowserButtonAction(ActionEvent event) {
@@ -141,41 +142,45 @@ public class SparkFrontEndController {
                     app = new RandomForestClass(labelIndex,trainingFile,testingFile,params);
                 }
                 //TODO Format Params better
-                updateUI("Creating RandomForest with the following parameters:\n"+params.toString()+"\n\n",actiontarget);
+                updateUI("Creating RandomForest with the following parameters:",actiontarget);
 
+                for(String paramKey:params.keySet()) {
+                    updateUI(""+paramKey+": "+params.get(paramKey),actiontarget);
+                }
+
+                updateUI("\n",actiontarget);
                 System.out.println("Begin train");
                 updateUI("Begin Training",actiontarget);
 
                 try {
                     final RandomForestModel model = app.trainModel();
+
                     System.out.println("Finished Training");
 
                     updateUI("FinishedTraining", actiontarget);
-
+                    //app.testMethod(model);
                     updateUI("Test Error: " + app.getClassificationError(model), actiontarget);
 
                     updateUI("Precision:"+app.getMultClassMetrics(app.computePredictionPairs(model)).precision(),actiontarget);
-                    updateUI("Recall:"+app.getMultClassMetrics(app.computePredictionPairs(model)).recall(),actiontarget);
 
                     updateUI("AUC:"+app.getBinClassMetrics(app.computePredictionPairs(model)).areaUnderROC(),actiontarget);
 
 
+
                     Matrix matrix = app.getConfusionMatrix(model);
                     double[][] matrixDoubleArray = new double[matrix.numRows()][matrix.numCols()];
-                    System.out.println("\ta\t\tb\t\t<-classified as");
                     for (int i = 0; i < matrix.numCols(); i++) {
-                        System.out.print("" + i + "\t");
                         for (int j = 0; j < matrix.numRows(); j++) {
-                            //System.out.print(matrix.apply(i,j)+"\t\t\t");
-                            System.out.printf("%5d", (int) matrix.apply(i, j));
                             matrixDoubleArray[j][i] = matrix.apply(j, i);
                         }
-                        System.out.println();
                     }
-                    //System.out.println(matrix.toString());
-
+                    //app.printResults();
+                    //if(!checkBox1.isIndeterminate() && checkBox1.isSelected()) {
+                        //app.relabelAndPrintResults(testingFile.getAbsolutePath()+"_labelDirectory", model);
+                    //}
                     System.out.println("**********\n" + MatrixUtils.matrixToString(matrixDoubleArray));
                     updateUI(MatrixUtils.matrixToString(matrixDoubleArray), actiontarget);
+
 
                     System.out.print("Finish run");
                     enableRunButton(run);
