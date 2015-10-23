@@ -1,5 +1,6 @@
 package controllers;
 
+import DataUtils.MatrixUtils;
 import DataUtils.TSVReaderUtils;
 import javafx.application.Platform;
 import javafx.collections.ObservableArray;
@@ -23,6 +24,7 @@ import org.apache.spark.mllib.tree.model.RandomForestModel;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,6 +109,8 @@ public class SparkFrontEndController {
 //        stage1.initOwner(run.getScene().getWindow());
 //        stage1.show();
 //
+
+        run.setDisable(true);
         final Thread runRFThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -138,19 +142,24 @@ public class SparkFrontEndController {
                 updateUI("Test Error: "+app.getClassificationError(model),actiontarget);
 
                 Matrix matrix =  app.getConfusionMatrix(model);
+                double[][] matrixDoubleArray = new double[matrix.numRows()][matrix.numCols()];
                 System.out.println("\ta\t\tb\t\t<-classified as");
                 for(int i = 0; i<matrix.numCols(); i++) {
                     System.out.print(""+i+"\t");
                     for(int j = 0; j<matrix.numRows(); j++) {
                         //System.out.print(matrix.apply(i,j)+"\t\t\t");
                         System.out.printf("%5d",(int)matrix.apply(i,j));
+                        matrixDoubleArray[j][i] = matrix.apply(j,i);
                     }
                     System.out.println();
                 }
                 //System.out.println(matrix.toString());
 
+                System.out.println("**********\n"+MatrixUtils.matrixToString(matrixDoubleArray));
+                updateUI(MatrixUtils.matrixToString(matrixDoubleArray),actiontarget);
 
                 System.out.print("Finish run");
+                enableRunButton(run);
                 app.closeContext();
             }
         });
@@ -241,4 +250,15 @@ public class SparkFrontEndController {
             }
         });
     }
+    private void enableRunButton( final Button runButton) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                runButton.setDisable(false);
+            }
+        });
+    }
+
+
+
 }
